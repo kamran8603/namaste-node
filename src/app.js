@@ -77,6 +77,7 @@ const { validateSignUpData }= require("./utils/validation")
 const bcrypt = require("bcrypt")
 const cookieParser = require("cookie-parser")
 const jwt= require("jsonwebtoken")
+const {userAuth} = require("./middleware/auth")
 app.use(express.json())
 app.use(cookieParser() )
 
@@ -122,11 +123,11 @@ app.post("/login",async(req, res)=>{
         }
         //step 3 it will compare the password fro hased that user will
         // give correct password or not
-        const isPasswordValid = await bcrypt.compare(password, user.password);
+        const isPasswordValid = await user.validatePassword(password)
         if(isPasswordValid){
 
             //create a jwt token
-            const token = await jwt.sign({ _id:user._id}, "secretkey")
+            const token = await user.getJWT()
             console.log(token)
             //add the token to cookie and send the response
             res.cookie("token",token)
@@ -140,21 +141,11 @@ res.status(400).send("ERROR : " + err.message)
     }
 })
 
-app.get("/profile",async(req, res)=>{
+app.get("/profile",userAuth,async(req, res)=>{
 
     try{
-        //extract the cookie 
-        const cookies = req.cookies
-        const {token}= cookies
-        if(!token){
-            throw new Error("Invalid token")
-        }
-        // here it will verify the user is correct or not 
-        const decodeMesage = await jwt.verify(token, "secretkey")
-        // get the id from token
-        const {_id}=decodeMesage;
-        console.log("Logged in user is "+ _id)
-        const user = await User.findById(_id)
+       //user is coming from middleware (Authmiddleware)
+        const user = req.user
         if(!user){
             throw new Error("user does not exist")
         }
@@ -199,49 +190,15 @@ app.get("/user", async (req, res) => {
     //    res.status(400).send("something went wro ng")
     // }
 })
-app.delete("/user", async (req, res) => {
-    const userId = req.body.userId
-    try {
-        const user = await User.findByIdAndDelete(userId)
-        res.send("User deleted suceesfully")
 
-    } catch {
-        res.status(400).send("you can not do that ")
-    }
-})
-app.patch("/user/:userId", async (req, res) => {
-    const userId = req.params?.userId
-    const data = req.body;
-
-    try {
-        const ALLOWED_UPDATE = ["photoUrl", "about", "gender", "skills", "age"];
-        const isUpdate = Object.keys(data).every((k) => 
-            ALLOWED_UPDATE.includes(k)
-    )
-        if (!isUpdate) { 
-          throw new Error("update not allowed")
-        }
-        const user = await User.findByIdAndUpdate({ _id: userId }, data)
-        res.status(200).send("user updated suceesfully")
-        console.log("user update successfully", user)
-    }
-    catch(err) {
-        res.status(400).send("you can not do that ")
-    }
+app.post("/sendConnection",userAuth, async(req, res)=>{
+        const user = req.user
+        //if we want to check which user send me the request then we can extract and send alond with the response
+        res.send(user.firstName +" successfully send the connection request ")
+        console.log("seuccesfully send the connection")
+   
 })
 
-
-app.put("/user", async (req, res) => {
-    const userId = req.body.userId
-    const data = req.body
-    try {
-        const user = await User.findOneAndUpdate({ _id: userId }, data)
-        res.send("user updated suceesfully")
-    }
-    catch {
-        res.status(400).send("you can not do that ")
-    }
-})
 connectDB()
     .then(() => {
         console.log("Database connection extablished")
