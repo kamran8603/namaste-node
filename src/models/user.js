@@ -45,11 +45,11 @@ const userSchema = mongoose.Schema({
             }
         }
     },
-    photoUrl:{
+    photoURL:{
         type:String,
         default:"https://www.shutterstock.com/image-vector/isolated-object-avatar-dummy-symbol-260nw-1290296656.jpg",
         validate(value){
-            if(!validator.isURL(value)){
+            if(!validator.isURL(value,{require_protocol:true})){
                 throw new Error("URL  is invalid "+ value)
             }
         }
