@@ -15,7 +15,7 @@
 - POST /request/send/intrested/:userId
 - POST /request/send/ignored/:userId
 - GET / connections
-- GET /requests/receive
+- GET /requests/receive 
 - GET / feed - gets you the the profiles of other user on platform
  
  # UserRouter
@@ -23,4 +23,6 @@
  - GET /user/requests
  - GET /user/feed
 
+
+<!-- waiting for home work -->
 status : ignored , intrested, accepted, rejected 
