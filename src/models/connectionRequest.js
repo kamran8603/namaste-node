@@ -13,7 +13,7 @@ const mongoose = require("mongoose")
         type:String,
         required:true,
         enum:{
-            values:["ignored", "intrested", "accepted","rejected"],
+            values:["ignored", "interested", "accepted","rejected"],
             message:`{VALUES} is oncorrect status type `
         }
     }
@@ -26,28 +26,18 @@ const mongoose = require("mongoose")
 // use hota hai data database me save hone se pehle kuch 
 // validation ya logic chalane ke liye.
 
-//  connectionRequestSchema.pre("save", function (next){
-//    const connectionRequest=this 
-//     //check if the fromUserId is same to userId
+ connectionRequestSchema.pre("save", function (){
+   const connectionRequest=this 
+    //check if the fromUserId is same to userId
 
-//     if (connectionRequest.fromUserId.equals(connectionRequest.toUserId)){
-//      throw new Error("you cannot send connection request to yourself")
-//     }
-//     next()
-//  })
+    if (connectionRequest.fromUserId.equals(connectionRequest.toUserId)){
+     throw new Error("you cannot send connection request to yourself")
+    }
+   console.log("next is working")
+ })
 
-connectionRequestSchema.pre("save", function(next) {
-    const connectionRequest = this;
-  
-    //chekc is fromUserId is same as toUserId
-    if (connectionRequest.fromUserId.equals(connectionRequest.toUserId)) {
-        console.log("yhn error hai next is not a function")
-        throw new Error("you cannot send connection request to yourself")
-      
-     }
-     console.log("next is not a function ye error hai")
-    next();
-  });
+
+
  const ConnectionRequestModel= new mongoose.model(
     "ConnectionRequest",
     connectionRequestSchema

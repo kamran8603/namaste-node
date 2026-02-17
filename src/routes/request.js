@@ -11,11 +11,11 @@ async(req, res)=>{
     const toUserId = req.params.toUserId
     const status = req.params.status
 
-    const allowedStatus = ["ignored", "intrested"]
+    const allowedStatus = ["ignored", "interested"]
     if(!allowedStatus.includes(status)){
         return res
         .status(400)
-        .json({message: "invalid status type:"+status})
+        .json({message: "invalid status type: "+status})
     }
 
     
