@@ -66,7 +66,10 @@ const userSchema = mongoose.Schema({
      type:[String]
     }
 
-});
+}, {timestamps:true,} );
+
+// this is how we put index in our database
+// userSchema.index({firstName:1})
 
 userSchema.methods.getJWT= async function(){
     const user = this;

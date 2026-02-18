@@ -3,13 +3,14 @@ const mongoose = require("mongoose")
  const connectionRequestSchema= new mongoose.Schema({
     fromUserId:{
         type:mongoose.Schema.Types.ObjectId,
+        ref: "User" ,//refrence to the user collection
         required:true
     },
     toUserId:{
         type:mongoose.Schema.Types.ObjectId,
         required:true
     },
-    status:{
+    status:{ 
         type:String,
         required:true,
         enum:{
@@ -21,6 +22,10 @@ const mongoose = require("mongoose")
  },
  {timestamps:true}
  );
+
+//  this is how we put the indexing so it make our query faster 
+connectionRequestSchema.index({fromUserId:1, toUserId:1})
+
 
 // Node.js + Mongoose me pre("save") middleware (hook) ka
 // use hota hai data database me save hone se pehle kuch 
@@ -42,4 +47,5 @@ const mongoose = require("mongoose")
     "ConnectionRequest",
     connectionRequestSchema
     )
+    
  module.exports= ConnectionRequestModel;  
