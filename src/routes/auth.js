@@ -13,7 +13,7 @@ authRouter.post("/signup", async (req, res) => {
 
         // after validation of data now we can extract it 
 
-        const { firstName, lastName, emailId, password } = req.body
+        const { firstName, lastName, emailId, password,age,gender,about,skills } = req.body
 
         //after the encrypt the password  then save it  
         const passwordHash = await bcrypt.hash(password, 10)
@@ -24,7 +24,11 @@ authRouter.post("/signup", async (req, res) => {
             firstName,
             lastName,
             emailId,
-            password: passwordHash
+            password: passwordHash,
+            age,
+            gender,
+            about,
+            skills
         })
         // now you can save user in the db  
         await user.save()
@@ -57,7 +61,7 @@ authRouter.post("/login", async (req, res) => {
             console.log(token)
             //add the token to cookie and send the response
             res.cookie("token", token)
-            res.send("Login Successfull")
+            res.send(user)
         } else {
             throw new Error("Password is not valid")
         }

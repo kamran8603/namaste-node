@@ -10,7 +10,8 @@ const userSchema = mongoose.Schema({
         maxLength:50
     }, 
     lastName:{
-        type:String
+        type:String,
+        required:true
     },
     emailId:{
     type: String,
@@ -35,19 +36,21 @@ const userSchema = mongoose.Schema({
     },
     age:{
         type: Number,
+        required:true,
+        min:18
 
     },
     gender:{
         type:String,
-        enum:{
-            values:["male", "female","others"],
-            message:`{VALUES}is not a valid gender`
-        }
-        // validate(value){
-        //     if(!["male","female", "others"].includes(value)){
-        //         throw new Error("gender not define")
-        //     }
+        // enum:{
+        //     values:["male", "female","others"],
+        //     message:`{VALUES}is not a valid gender`
         // }
+        validate(value){
+            if(!["male","female", "others"].includes(value)){
+                throw new Error("gender not define")
+            }
+        }
     },
     photoUrl:{
         type:String,
