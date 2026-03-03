@@ -25,14 +25,19 @@ authRouter.post("/signup", async (req, res) => {
             lastName,
             emailId,
             password: passwordHash,
-            age,
-            gender,
-            about,
-            skills
+           
         })
         // now you can save user in the db  
-        await user.save()
-        res.send("user added successfully")
+      const savedUser =   await user.save()
+
+        const token = await savedUser.getJWT()
+            console.log(token)
+            //add the token to cookie and send the response
+            res.cookie("token", token,{
+                expires:new Date(Date.now()+ 8 * 3600000),
+            })
+
+        res.json({message:"User Added successfully",data:savedUser})
         console.log(user)
     }
     catch (err) {
@@ -60,7 +65,9 @@ authRouter.post("/login", async (req, res) => {
             const token = await user.getJWT()
             console.log(token)
             //add the token to cookie and send the response
-            res.cookie("token", token)
+            res.cookie("token", token,{
+                expires:new Date(Date.now()+ 8 * 3600000),
+            })
             res.send(user)
         } else {
             throw new Error("Password is not valid")

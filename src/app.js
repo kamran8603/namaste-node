@@ -10,9 +10,22 @@ const cookieParser = require("cookie-parser")
 const jwt= require("jsonwebtoken")
 
 app.use(cors({
-    origin:"http://localhost:5173/",
-    credentials:true
+    origin:"http://localhost:5173",
+    credentials:true,
+     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"] 
 }))
+// app.use((req, res, next) => {
+//     res.header("Access-Control-Allow-Origin", "http://localhost:5173");
+//     res.header("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS");
+//     res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+//     res.header("Access-Control-Allow-Credentials", "true");
+    
+//     if (req.method === "OPTIONS") {
+//         return res.sendStatus(204);
+//     }
+//     next();
+// });
+
 app.use(express.json())
 app.use(cookieParser() )
 
@@ -28,37 +41,7 @@ app.use("/", profileRouter);
 app.use("/", requestRouter);
 app.use("/", userRouter)
  
-// app.get("/user", async (req, res) => {
-//     const userEmail = req.body.emailId;
 
-//     try {
-//         console.log(userEmail)
-//         const user = await User.findOne({ emailId: userEmail })
-//         if (!user) {
-//             res.status(404).send("user not found")
-//         }
-//         else {
-//             res.send(user)
-//         }
-//     }
-//     catch {
-//         res.status(400).send("something went wrong")
-//     }
-//     // try{
-//     //     console.log(userEmail)
-//     //     const users =await User.find({emailId:userEmail})
-//     //     if(!users){
-//     //         res.status(404).send("User not found")
-
-//     //     }else{
-//     //         res.send(users)
-//     //     }
-
-//     // }
-//     // catch(err){
-//     //    res.status(400).send("something went wro ng")
-//     // }
-// })
 
 
 
