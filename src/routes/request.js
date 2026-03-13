@@ -54,7 +54,7 @@ async(req, res)=>{
       const emailRes = await sendEmail.run("A New Friend Request from "+req.user.firstName,
         req.user.firstName+ " is "+ status+" in " + toUser.firstName
       )
-console.log(emailRes)
+
       res.json({
         message:req.user.firstName+ " is "+ status+" in " + toUser.firstName+ 
         data

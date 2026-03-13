@@ -42,7 +42,7 @@ try{
     .populate("fromUserId", USER_SAFE_DATA)
     .populate("toUserId", USER_SAFE_DATA);
      
-console.log(connectionRequests)
+
 
     const data = connectionRequests.map(row=>{
         if(row.fromUserId._id.toString()=== loggedInUser._id.toString()){
@@ -93,7 +93,7 @@ userRouter.get("/feed", userAuth, async(req,res)=>{
             hideUserFromfeed.add(req.fromUserId.toString())
             hideUserFromfeed.add(req.toUserId.toString())
         })
-        console.log(hideUserFromfeed)
+       
         
         const users = await User.find({
             $and:[

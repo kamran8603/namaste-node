@@ -12,7 +12,7 @@ const sesClient = new SESClient({
     }
 
 });
-console.log("access key",process.env.AWS_ACCESS_KEY)
+
 
 // snippet-end:[ses.JavaScript.createclientv3]
 module.exports = { sesClient }

@@ -39,7 +39,7 @@ connectionRequestSchema.index({fromUserId:1, toUserId:1})
     if (connectionRequest.fromUserId.equals(connectionRequest.toUserId)){
      throw new Error("you cannot send connection request to yourself")
     }
-   console.log("next is working")
+  
  })
 
 
