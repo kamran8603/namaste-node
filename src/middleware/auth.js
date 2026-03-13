@@ -9,7 +9,7 @@ const userAuth = async(req, res, next)=>{
           return res.status(401).send("Please Login")
         }
        // here it will verify the user is correct or not 
-        const decodeObj = await jwt.verify(token, "secretkey")
+        const decodeObj = await jwt.verify(token, process.env.JWT_SECRET)
         // get the id from token
         const {_id}= decodeObj
         const user = await User.findById(_id)

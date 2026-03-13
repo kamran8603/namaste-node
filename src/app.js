@@ -1,10 +1,10 @@
 // just checking is it working perfect or not 
-
+require("dotenv").config();
 const express = require("express")
 const connectDB = require("./config/database")
 const cors = require("cors")
 const app = express()
-const port = 7777
+
 
 const cookieParser = require("cookie-parser")
 const jwt= require("jsonwebtoken")
@@ -48,7 +48,7 @@ app.use("/", userRouter)
 connectDB()
     .then(() => {
         console.log("Database connection extablished")
-        app.listen(port, () => {
+        app.listen(process.env.PORT, () => {
             console.log("Server is running ")
         })
     })
