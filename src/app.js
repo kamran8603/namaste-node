@@ -1,9 +1,9 @@
-
-
 const express = require("express")
 const connectDB = require("./config/database")
 const cors = require("cors")
 const app = express()
+
+//socket.io first thing we need to import it from http
 const http = require("http")
 require("dotenv").config();
 // require("./utils/cronjob")
@@ -34,14 +34,18 @@ app.use("/", profileRouter);
 app.use("/", requestRouter);
 app.use("/", userRouter)
  
+//2nd step we need to create the server
 const server = http.createServer(app)
 initializeSocket(server)
+
+
 
 
 
 connectDB()
     .then(() => {
         console.log("Database connection extablished")
+        // 3rd server.listen
         server.listen(process.env.PORT, () => {
             console.log("Server is running ")
         })

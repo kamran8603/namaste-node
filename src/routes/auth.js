@@ -13,11 +13,11 @@ authRouter.post("/signup", async (req, res) => {
 
         // after validation of data now we can extract it 
 
-        const { firstName, lastName, emailId, password,age,gender,about,skills } = req.body
+        const { firstName, lastName, emailId, password, age, gender, about, skills } = req.body
 
         //after the encrypt the password  then save it  
         const passwordHash = await bcrypt.hash(password, 10)
-        
+
 
         //    this is the instance of the user model
         const user = new User({
@@ -25,20 +25,20 @@ authRouter.post("/signup", async (req, res) => {
             lastName,
             emailId,
             password: passwordHash,
-           
+
         })
         // now you can save user in the db  
-      const savedUser =   await user.save()
+        const savedUser = await user.save()
 
         const token = await savedUser.getJWT()
-           
-            //add the token to cookie and send the response
-            res.cookie("token", token,{
-                expires:new Date(Date.now()+ 8 * 3600000),
-            })
 
-        res.json({message:"User Added successfully",data:savedUser})
-        
+        //add the token to cookie and send the response
+        res.cookie("token", token, {
+            expires: new Date(Date.now() + 8 * 3600000),
+        })
+
+        res.json({ message: "User Added successfully", data: savedUser })
+
     }
     catch (err) {
         res.status(400).send("ERROR : " + err.message)
@@ -63,10 +63,10 @@ authRouter.post("/login", async (req, res) => {
 
             //create a jwt token
             const token = await user.getJWT()
-            
+
             //add the token to cookie and send the response
-            res.cookie("token", token,{
-                expires:new Date(Date.now()+ 8 * 3600000),
+            res.cookie("token", token, {
+                expires: new Date(Date.now() + 8 * 3600000),
             })
             res.send(user)
         } else {
